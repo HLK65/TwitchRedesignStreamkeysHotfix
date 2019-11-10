@@ -13,17 +13,17 @@
 
 window.addEventListener('load', function() {
     //add old class to playpause Button
-    var playpauseE = document.querySelectorAll('[data-a-target="player-play-pause-button"]')[0]
+    var playpauseE = document.querySelector('[data-a-target="player-play-pause-button"]')
     playpauseE.classList.add("qa-pause-play-button")
 
     //add old classes to title and parent element
-    var titleE = document.querySelectorAll('[data-a-target="stream-title"]')[0]
+    var titleE = document.querySelector('[data-a-target="stream-title"]')
     titleE.parentElement.classList.add("title")
     titleE.classList.add("real")
 
 
     //Create old span Element to query play pause status and change it according to new element
-    //document.querySelectorAll('[data-a-target="player-play-pause-button"]')[0].getAttribute("data-a-player-state") === "playing"
+    //document.querySelector('[data-a-target="player-play-pause-button"]').getAttribute("data-a-player-state") === "playing"
     var span = document.createElement("span")
     span.setAttribute("id", "playPauseStatusDummy")
     updateStatusDummy(span)
@@ -36,7 +36,7 @@ window.addEventListener('load', function() {
         });
     });
 
-    mutationObserver.observe(document.querySelectorAll('[data-a-target="player-play-pause-button"]')[0], {
+    mutationObserver.observe(document.querySelector('[data-a-target="player-play-pause-button"]'), {
         attributes: true,
         characterData: false,
         childList: false,
@@ -49,7 +49,7 @@ window.addEventListener('load', function() {
 }, false);
 
 function updateStatusDummy(element) {
-    if (document.querySelectorAll('[data-a-target="player-play-pause-button"]')[0].getAttribute("data-a-player-state") === "playing") {
+    if (document.querySelector('[data-a-target="player-play-pause-button"]').getAttribute("data-a-player-state") === "playing") {
         element.setAttribute("data-tip", "Pause")
     } else {
         element.setAttribute("data-tip", "Play")
