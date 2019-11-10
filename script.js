@@ -6,8 +6,6 @@
 // @author       hlk
 // @include      https://www.twitch.tv/*
 // @include      https://twitch.tv/*
-// @exclude      https://www.twitch.tv/*/*
-// @exclude      https://twitch.tv/*/*
 // @grant        none
 // ==/UserScript==
 
