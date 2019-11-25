@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         streamkeys twitch redesign workaround
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  workaround for streamkeys not working with new design
 // @author       hlk
 // @include      https://www.twitch.tv/*
@@ -9,7 +9,28 @@
 // @grant        none
 // ==/UserScript==
 
-window.addEventListener('load', function() {
+var retry = 0;
+
+var pushState = history.pushState;
+history.pushState = function () {
+    pushState.apply(history, arguments);
+    retry = 0;
+    hotfix();
+};
+
+window.addEventListener('load', function() {retry = 0; hotfix();}, false);
+
+function updateStatusDummy(element) {
+    if (document.querySelector('[data-a-target="player-play-pause-button"]').getAttribute("data-a-player-state") === "playing") {
+        element.setAttribute("data-tip", "Pause")
+    } else {
+        element.setAttribute("data-tip", "Play")
+    }
+};
+
+function hotfix() {
+    try {
+    console.log("1234")
     //add old class to playpause Button
     var playpauseE = document.querySelector('[data-a-target="player-play-pause-button"]')
     playpauseE.classList.add("qa-pause-play-button")
@@ -42,14 +63,10 @@ window.addEventListener('load', function() {
         attributeOldValue: false,
         characterDataOldValue: false
     });
-
-
-}, false);
-
-function updateStatusDummy(element) {
-    if (document.querySelector('[data-a-target="player-play-pause-button"]').getAttribute("data-a-player-state") === "playing") {
-        element.setAttribute("data-tip", "Pause")
-    } else {
-        element.setAttribute("data-tip", "Play")
     }
-}
+    catch (e) {
+        if (retry++ < 5) {
+            setTimeout(hotfix, 1000)
+        }
+    }
+};
